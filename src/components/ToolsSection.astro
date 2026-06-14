@@ -1,0 +1,290 @@
+---
+import type { ImageMetadata } from 'astro';
+
+const modules = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/Logos/*.png',
+  { eager: true }
+);
+
+// Resolve a logo's ImageMetadata by its exact source filename.
+function logoByFile(file: string): ImageMetadata | undefined {
+  const entry = Object.entries(modules).find(([path]) => path.endsWith(`/${file}`));
+  return entry?.[1].default;
+}
+
+// Tools placed at fixed, scattered grid positions (1-indexed row/col, 9-wide).
+const placedTools = [
+  { file: 'Abelton.png',         name: 'Ableton',       slug: 'ableton',         row: 1, col: 1 },
+  { file: 'Aesprite.png',        name: 'Aseprite',      slug: 'aseprite',        row: 1, col: 3 },
+  { file: 'After Effects.png',   name: 'After Effects', slug: 'after-effects',   row: 1, col: 5 },
+  { file: 'Animate.png',         name: 'Adobe Animate', slug: 'animate',         row: 1, col: 6 },
+  { file: 'Astro.png',           name: 'Astro',         slug: 'astro',           row: 1, col: 8 },
+  { file: 'ChatGPT.png',         name: 'ChatGPT',       slug: 'chatgpt',         row: 2, col: 2 },
+  { file: 'Claude.png',          name: 'Claude',        slug: 'claude',          row: 2, col: 4 },
+  { file: 'Figma.png',           name: 'Figma',         slug: 'figma',           row: 2, col: 7 },
+  { file: 'Github.png',          name: 'GitHub',        slug: 'github',          row: 2, col: 9 },
+  { file: 'Godot.png',           name: 'Godot',         slug: 'godot',           row: 3, col: 1 },
+  { file: 'Notion.png',          name: 'Notion',        slug: 'notion',          row: 3, col: 3 },
+  { file: 'Obsidian.png',        name: 'Obsidian',      slug: 'obsidian',        row: 3, col: 6 },
+  { file: 'Palimpsest Logo.png', name: 'Palimpsest',    slug: 'palimpsest-logo', row: 3, col: 8 },
+  { file: 'Premiere.png',        name: 'Premiere Pro',  slug: 'premiere',        row: 4, col: 2 },
+  { file: 'Tableau.png',         name: 'Tableau',       slug: 'tableau',         row: 4, col: 4 },
+  { file: 'Twine.png',           name: 'Twine',         slug: 'twine',           row: 4, col: 5 },
+  { file: 'VSCode.png',          name: 'VSCode',        slug: 'vscode',          row: 4, col: 7 },
+  { file: 'Windsurf.png',        name: 'Windsurf',      slug: 'windsurf',        row: 4, col: 9 },
+].map((t) => ({ ...t, image: logoByFile(t.file) }));
+---
+
+<section class="tools" id="tools">
+  <div class="tools__inner">
+    <span class="tools__eyebrow" data-reveal>Tools &amp; Tech</span>
+  </div>
+
+  <div class="tools__strip" data-reveal>
+    <canvas class="tools__noise"></canvas>
+    <div class="tools__grid">
+      {
+        placedTools.map((tool) => (
+          <a
+            class="tools__item"
+            href={`/tools/${tool.slug}`}
+            title={tool.name}
+            style={`grid-row:${tool.row};grid-column:${tool.col};`}
+          >
+            {tool.image && (
+              <img src={tool.image.src} alt={tool.name} loading="lazy" />
+            )}
+            <span class="tools__name">{tool.name}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .tools {
+    position: relative;
+    z-index: 2;
+    background: transparent;
+    padding: 5rem 0;
+  }
+
+  .tools__inner {
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 0 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tools__eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(0, 0, 0, 0.55);
+  }
+
+  /* Full-bleed thick strip with a dark, slightly-transparent backdrop. The
+     encryption noise runs on the canvas behind; the logo grid sits on top. */
+  .tools__strip {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background: rgba(0, 0, 0, 0.6);
+    border-top: 1px solid rgba(0, 0, 0, 0.35);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+    padding: 2.5rem 0;
+    overflow: hidden;
+  }
+
+  .tools__noise {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 7%,
+      #000 93%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 7%,
+      #000 93%,
+      transparent 100%
+    );
+  }
+
+  /* Same scattered 9-wide grid as before — but the cells have no outline or
+     background, so empty cells just reveal the strip's noise behind. */
+  .tools__grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    width: 100%;
+    max-width: 1290px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .tools__item {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16%;
+    text-decoration: none;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .tools__item:hover {
+    transform: scale(1.14);
+    z-index: 5;
+  }
+
+  .tools__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: grayscale(1) brightness(1.6) opacity(0.75);
+    transition: filter 0.25s ease;
+  }
+
+  .tools__item:hover img {
+    filter: grayscale(0) brightness(1) opacity(1);
+  }
+
+  /* Name label — revealed beneath the logo on hover */
+  .tools__name {
+    position: absolute;
+    top: calc(100% - 6px);
+    left: 50%;
+    transform: translate(-50%, -4px);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+  }
+
+  .tools__item:hover .tools__name {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  @media (max-width: 768px) {
+    .tools {
+      padding: 4rem 0;
+    }
+
+    .tools__inner {
+      padding: 0 1.5rem 2rem;
+    }
+
+    .tools__grid {
+      grid-template-columns: repeat(5, 1fr);
+      padding: 0 1.5rem;
+    }
+
+    /* Let cells flow naturally on mobile instead of the 9-wide scatter */
+    .tools__item {
+      grid-row: auto !important;
+      grid-column: auto !important;
+    }
+  }
+</style>
+
+<script>
+  // Flipping binary/hash "encryption" noise drawn across the whole strip.
+  const NOISE_CHARS = '01#/\\[]{}=+-<>';
+  const randChar = () =>
+    NOISE_CHARS[Math.floor(Math.random() * NOISE_CHARS.length)];
+
+  const canvas = document.querySelector<HTMLCanvasElement>('.tools__noise');
+  const ctx = canvas?.getContext('2d');
+
+  if (canvas && ctx) {
+    const charSize = 13;
+    const cellW = charSize * 0.7;
+    const cellH = charSize * 1.3;
+
+    let w = 0;
+    let h = 0;
+    let cols = 0;
+    let rows = 0;
+    let grid: string[][] = [];
+    const flipping = new Set<string>();
+
+    const draw = () => {
+      ctx.clearRect(0, 0, w, h);
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          ctx.fillStyle = flipping.has(`${r}-${c}`)
+            ? 'rgba(255,255,255,0.22)'
+            : 'rgba(255,255,255,0.06)';
+          ctx.fillText(grid[r][c], c * cellW + cellW * 0.15, r * cellH + cellH * 0.15);
+        }
+      }
+    };
+
+    const setup = () => {
+      const rect = canvas.getBoundingClientRect();
+      w = rect.width;
+      h = rect.height;
+      if (!w || !h) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.font = `${charSize}px monospace`;
+      ctx.textBaseline = 'top';
+
+      cols = Math.max(4, Math.floor(w / cellW));
+      rows = Math.max(4, Math.floor(h / cellH));
+      grid = [];
+      for (let r = 0; r < rows; r++) {
+        const row: string[] = [];
+        for (let c = 0; c < cols; c++) row.push(randChar());
+        grid.push(row);
+      }
+      draw();
+    };
+
+    setup();
+
+    setInterval(() => {
+      if (!cols || !rows) return;
+      flipping.clear();
+      const count = Math.max(4, Math.round(cols * rows * 0.02));
+      for (let i = 0; i < count; i++) {
+        const r = Math.floor(Math.random() * rows);
+        const c = Math.floor(Math.random() * cols);
+        grid[r][c] = randChar();
+        flipping.add(`${r}-${c}`);
+      }
+      draw();
+    }, 110);
+
+    if (typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(() => setup()).observe(canvas);
+    } else {
+      window.addEventListener('resize', setup);
+    }
+  }
+</script>

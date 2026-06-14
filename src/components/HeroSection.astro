@@ -1,0 +1,249 @@
+﻿---
+---
+
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__text" data-hero-content>
+      <span
+        class="hero__eyebrow"
+        data-brand-anchor
+        aria-hidden="true"
+      >
+        Creative Portfolio
+      </span>
+      <h1
+        class="hero__title"
+        data-hero-animate
+        style="animation-delay: 0.45s;"
+      >
+        Hi, I'm Hayden.
+      </h1>
+      <div
+        class="hero__buttons"
+        data-hero-animate
+        style="animation-delay: 0.7s;"
+      >
+        <a href="/work" class="hero__btn hero__btn--primary">View My Work</a>
+        <a href="/contact" class="hero__btn hero__btn--ghost">Get In Touch</a>
+      </div>
+    </div>
+
+    <div
+      class="hero__photo"
+      data-hero-animate
+      style="animation-delay: 0.5s;"
+    >
+      <img class="hero__img" src="/headshot.jpg" alt="Hayden Porter" />
+    </div>
+  </div>
+
+  <div class="hero__scroll" id="heroScroll">
+    <span>Scroll</span>
+    <div class="hero__scroll-arrow"></div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    z-index: 2;
+    height: 100vh;
+    height: 100svh;
+    display: flex;
+    align-items: center;
+    padding: 0 4rem;
+    background: transparent;
+  }
+
+  .hero__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1180px;
+    gap: 4rem;
+  }
+
+  .hero__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  /* Invisible anchor — the fixed .brand element in the header mirrors its
+     position at scroll 0, then detaches and sticks to the nav on scroll. */
+  .hero__eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .hero__title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 400;
+    color: #000000;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 60px rgba(255, 255, 255, 0.7);
+    margin: 0;
+  }
+
+  .hero__buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .hero__btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    padding: 0.75rem 1.75rem;
+    border-radius: 100px;
+    transition: all 0.2s ease;
+  }
+
+  .hero__btn--primary {
+    background: #ffffff;
+    color: #0a0a0f;
+  }
+
+  .hero__btn--primary:hover {
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  .hero__btn--ghost {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    color: #000000;
+  }
+
+  .hero__btn--ghost:hover {
+    border-color: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .hero__photo {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .hero__img {
+    display: block;
+    width: 450px;
+    height: 600px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 12px;
+  }
+
+  .hero__scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    transition: opacity 0.4s ease;
+  }
+
+  .hero__scroll span {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(0, 0, 0, 0.45);
+  }
+
+  .hero__scroll-arrow {
+    width: 1px;
+    height: 32px;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.4),
+      transparent
+    );
+    animation: scrollPulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scaleY(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scaleY(1.1);
+    }
+  }
+
+  @keyframes heroFadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  [data-hero-animate] {
+    opacity: 0;
+    animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-hero-animate] {
+      opacity: 1;
+      animation: none;
+    }
+    .hero__scroll-arrow {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 0 1.5rem;
+    }
+    .hero__inner {
+      flex-direction: column-reverse;
+      justify-content: center;
+      text-align: left;
+      gap: 2rem;
+    }
+    .hero__img {
+      width: 280px;
+      height: 373px;
+    }
+    .hero__scroll {
+      left: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  const scrollIndicator = document.getElementById('heroScroll');
+  if (scrollIndicator) {
+    window.addEventListener(
+      'scroll',
+      () => {
+        const opacity = Math.max(0, 1 - window.scrollY / 200);
+        scrollIndicator.style.opacity = String(opacity);
+      },
+      { passive: true }
+    );
+  }
+</script>

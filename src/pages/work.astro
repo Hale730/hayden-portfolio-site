@@ -1,0 +1,223 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ShaderBackground from '../components/ShaderBackground.jsx';
+import { projects } from '../data/projects';
+---
+
+<Layout title="Work — Hayden Porter">
+  <ShaderBackground client:only="react" animateColors />
+
+  <main class="work-page">
+    <header class="work-page__intro">
+      <span class="work-page__eyebrow" data-reveal>Selected Work</span>
+      <h1 class="work-page__title" data-reveal style="--reveal-delay: 120;">
+        A timeline of things I&rsquo;ve made.
+      </h1>
+    </header>
+
+    {
+      projects.map((project, i) => (
+        <section
+          class={`proj ${i % 2 === 1 ? 'proj--reverse' : ''}`}
+          data-shader-section
+          data-c1={project.palette.c1}
+          data-c2={project.palette.c2}
+          data-c3={project.palette.c3}
+          style={`--text: ${project.palette.text};`}
+        >
+          <a class="proj__inner" href={`/work/${project.slug}`}>
+            <div class="proj__media">
+              {project.image ? (
+                <img src={project.image.src} alt={project.title} loading="lazy" />
+              ) : (
+                <div class="proj__placeholder">
+                  <span>Image Needed</span>
+                </div>
+              )}
+            </div>
+            <div class="proj__text">
+              <span class="proj__date" data-reveal>{project.date}</span>
+              <h2 class="proj__heading" data-reveal style="--reveal-delay: 80;">
+                {project.title}
+              </h2>
+              <p class="proj__desc" data-reveal style="--reveal-delay: 160;">
+                {project.blurb}
+              </p>
+              <span class="proj__cta" data-reveal style="--reveal-delay: 240;">
+                View project <span class="proj__arrow" aria-hidden="true">&#8594;</span>
+              </span>
+            </div>
+          </a>
+        </section>
+      ))
+    }
+  </main>
+</Layout>
+
+<style>
+  .work-page {
+    position: relative;
+    z-index: 2;
+  }
+
+  .work-page__intro {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 9rem 2rem 1rem;
+    text-align: center;
+    color: #ffffff;
+  }
+
+  .work-page__eyebrow {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.75rem;
+  }
+
+  .work-page__title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Each project owns a full viewport-height section. */
+  .proj {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 5rem 2rem;
+    color: var(--text, #ffffff);
+  }
+
+  .proj__inner {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5rem;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .proj--reverse .proj__media {
+    order: 2;
+  }
+
+  .proj__media {
+    aspect-ratio: 4 / 3;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  .proj__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .proj__inner:hover .proj__media img,
+  .proj__inner:focus-visible .proj__media img {
+    transform: scale(1.04);
+  }
+
+  /* Neutral placeholder — image area, not tied to the palette. */
+  .proj__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px dashed rgba(255, 255, 255, 0.28);
+  }
+
+  .proj__placeholder span {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .proj__date {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 0.9rem;
+  }
+
+  .proj__heading {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.1rem;
+    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .proj__desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    opacity: 0.85;
+    max-width: 46ch;
+    text-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
+  }
+
+  .proj__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.6rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.95;
+  }
+
+  .proj__arrow {
+    font-size: 1.05rem;
+    line-height: 1;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .proj__inner:hover .proj__arrow,
+  .proj__inner:focus-visible .proj__arrow {
+    transform: translateX(6px);
+  }
+
+  @media (max-width: 768px) {
+    .proj {
+      min-height: auto;
+      padding: 5rem 1.5rem;
+    }
+
+    .proj__inner {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+
+    /* Media always above the text on mobile. */
+    .proj--reverse .proj__media {
+      order: 0;
+    }
+  }
+</style>

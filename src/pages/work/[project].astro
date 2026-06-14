@@ -1,0 +1,172 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ShaderBackground from '../../components/ShaderBackground.jsx';
+import { projects } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({ params: { project: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props;
+---
+
+<Layout title={`${project.title} — Hayden Porter`}>
+  <ShaderBackground client:only="react" animateColors />
+
+  <main
+    class="project"
+    data-shader-section
+    data-c1={project.palette.c1}
+    data-c2={project.palette.c2}
+    data-c3={project.palette.c3}
+    style={`--text: ${project.palette.text};`}
+  >
+    <a href="/work" class="project__back">&#8592; All work</a>
+
+    <div class="project__inner">
+      <span class="project__date">{project.date}</span>
+      <h1 class="project__title">{project.title}</h1>
+      <p class="project__blurb">{project.blurb}</p>
+
+      {
+        project.link && (
+          <a
+            href={project.link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="project__link"
+          >
+            {project.link.label} &#8599;
+          </a>
+        )
+      }
+
+      <div class="project__media">
+        {project.image ? (
+          <img src={project.image.src} alt={project.title} />
+        ) : (
+          <div class="project__placeholder">
+            <span>Image Needed</span>
+          </div>
+        )}
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .project {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    padding: 7rem 2rem 5rem;
+    max-width: 960px;
+    margin: 0 auto;
+    color: var(--text, #ffffff);
+  }
+
+  .project__back {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.75;
+    margin-bottom: 3rem;
+    transition: opacity 0.2s ease;
+  }
+
+  .project__back:hover {
+    opacity: 1;
+  }
+
+  .project__date {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+  }
+
+  .project__title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.45);
+  }
+
+  .project__blurb {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    opacity: 0.9;
+    max-width: 60ch;
+    text-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
+  }
+
+  .project__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.75rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+    border: 1px solid currentColor;
+    padding: 0.7rem 1.4rem;
+    border-radius: 100px;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+  }
+
+  .project__link:hover {
+    opacity: 1;
+  }
+
+  .project__media {
+    margin-top: 3.5rem;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  }
+
+  .project__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .project__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px dashed rgba(255, 255, 255, 0.28);
+  }
+
+  .project__placeholder span {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  @media (max-width: 768px) {
+    .project {
+      padding: 6rem 1.5rem 4rem;
+    }
+  }
+</style>

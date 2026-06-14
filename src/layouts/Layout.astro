@@ -1,23 +1,219 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Hayden Porter — Portfolio',
+  description = 'AET @ UT Austin. Game Dev. Digital Creator. World-maker.',
+} = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+    <style>
+      .brand {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 101;
+        display: flex;
+        align-items: center;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: rgba(0, 0, 0, 0.6);
+        white-space: nowrap;
+        transform: translateY(-50%);
+        pointer-events: none;
+        animation: brandIn 0.9s ease 0.2s both;
+      }
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+      .brand__name {
+        display: inline-block;
+        max-width: 0;
+        margin-right: 0;
+        overflow: hidden;
+        opacity: 0;
+        color: inherit;
+        font-weight: 600;
+        text-decoration: none;
+        pointer-events: auto;
+        transform: translateX(-12px);
+        transition:
+          max-width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+          margin-right 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 0.45s ease,
+          transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .brand.is-named .brand__name {
+        max-width: 16rem;
+        margin-right: 0.45rem;
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      @keyframes brandIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .brand {
+          animation: none;
+        }
+        .brand__name {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="brand" data-brand>
+      <a href="/" class="brand__name" data-brand-name>Hayden Porter</a>
+      <span class="brand__label">Creative Portfolio</span>
+    </div>
+
+    <nav class="site-nav">
+      <div class="site-nav__inner">
+        <div class="site-nav__links">
+          <a href="/about">About</a>
+          <a href="/work">Work</a>
+          <a href="#tools">Tools</a>
+          <a href="/contact">More</a>
+        </div>
+        <a href="/contact" class="site-nav__cta">Get in touch</a>
+      </div>
+    </nav>
+
+    <slot />
+
+    <script>
+      // Scroll-driven brand: the "Creative Portfolio" label starts over the
+      // (invisible) hero eyebrow, travels up with the page, then sticks to the
+      // nav. Once you scroll past the hero title, "Hayden Porter" slides in.
+      const brand = document.querySelector<HTMLElement>('.brand');
+      const navInner = document.querySelector<HTMLElement>('.site-nav__inner');
+
+      if (brand && navInner) {
+        const anchor = document.querySelector<HTMLElement>('[data-brand-anchor]');
+        const heroTitle = document.querySelector<HTMLElement>('.hero__title');
+
+        // If there's no hero (non-home pages), show the full brand statically.
+        brand.setAttribute('aria-hidden', anchor ? 'true' : 'false');
+
+        let startCenterY = 0;
+        let startLeft = 0;
+        let navCenterY = 0;
+        let navLeft = 0;
+        let stickScroll = 1;
+        let nameRevealScroll = 0;
+
+        const measure = () => {
+          const innerRect = navInner.getBoundingClientRect();
+          navCenterY = innerRect.top + innerRect.height / 2;
+          navLeft = innerRect.left;
+
+          if (anchor) {
+            const r = anchor.getBoundingClientRect();
+            startCenterY = r.top + r.height / 2 + window.scrollY;
+            startLeft = r.left;
+            stickScroll = Math.max(1, startCenterY - navCenterY);
+          } else {
+            startCenterY = navCenterY;
+            startLeft = navLeft;
+            stickScroll = 1;
+          }
+
+          if (heroTitle) {
+            const tr = heroTitle.getBoundingClientRect();
+            const titleCenterY = tr.top + tr.height / 2 + window.scrollY;
+            nameRevealScroll = Math.max(stickScroll, titleCenterY - navCenterY);
+          } else {
+            nameRevealScroll = 0;
+          }
+        };
+
+        const render = () => {
+          const y = window.scrollY;
+          const vpCenterY = Math.max(navCenterY, startCenterY - y);
+
+          // Hold the same horizontal position the whole way up — only move
+          // vertically. "Hayden Porter" sliding in is what shifts it sideways.
+          brand.style.top = `${vpCenterY}px`;
+          brand.style.left = `${startLeft}px`;
+
+          // Fade from dark (over the light hero) to light (in the dark header).
+          // With no hero anchor (other pages) the brand is docked from the start.
+          const p = anchor ? Math.min(1, y / stickScroll) : 1;
+          const v = Math.round(255 * p);
+          brand.style.color = `rgb(${v}, ${v}, ${v})`;
+
+          brand.classList.toggle('is-named', y >= nameRevealScroll);
+        };
+
+        const onScroll = () => {
+          window.requestAnimationFrame(render);
+        };
+
+        const remeasure = () => {
+          measure();
+          render();
+        };
+
+        measure();
+        render();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', remeasure);
+        window.addEventListener('load', remeasure);
+
+        // Re-center whenever the nav (or hero anchor) changes size — e.g. after
+        // web fonts load or nav padding changes — so the dock point never goes stale.
+        if (typeof ResizeObserver !== 'undefined') {
+          const ro = new ResizeObserver(remeasure);
+          ro.observe(navInner);
+          if (anchor) ro.observe(anchor);
+        }
+      }
+
+      const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if (revealEls.length && 'IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+        );
+        revealEls.forEach((el) => revealObserver.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add('is-revealed'));
+      }
+    </script>
+  </body>
+</html>

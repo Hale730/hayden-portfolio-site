@@ -1,11 +1,130 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import ShaderBackground from '../components/ShaderBackground.jsx';
+import HeroSection from '../components/HeroSection.astro';
+import AboutSection from '../components/AboutSection.astro';
+import ToolsSection from '../components/ToolsSection.astro';
+import WorkSection from '../components/WorkSection.astro';
 ---
 
 <Layout>
-	<Welcome />
+  <ShaderBackground client:only="react" />
+
+  <main class="site">
+    <HeroSection />
+    <AboutSection />
+    <ToolsSection />
+    <WorkSection />
+
+    <footer class="footer" data-reveal>
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <span class="footer__name">Hayden Porter</span>
+          <span class="footer__tag">AET @ UT Austin</span>
+        </div>
+        <nav class="footer__links" aria-label="Social links">
+          <a href="#" class="footer__link">GitHub</a>
+          <a href="#" class="footer__link">LinkedIn</a>
+        </nav>
+        <p class="footer__meta">Built with Astro. Deployed on Cloudflare.</p>
+      </div>
+    </footer>
+  </main>
 </Layout>
+
+<style>
+  .site {
+    position: relative;
+
+    z-index: 1;
+  }
+
+  .footer {
+    position: relative;
+    z-index: 2;
+    background: #0b0b0f;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 3rem 2rem 2.5rem;
+  }
+
+  .footer__inner {
+    max-width: 1180px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .footer__name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+  }
+
+  .footer__tag {
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .footer__links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer__link {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.25s ease;
+    position: relative;
+  }
+
+  .footer__link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.7);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .footer__link:hover {
+    color: #ffffff;
+  }
+
+  .footer__link:hover::after {
+    transform: scaleX(1);
+  }
+
+  .footer__meta {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.05em;
+  }
+
+  @media (min-width: 768px) {
+    .footer {
+      padding: 4rem 2rem 3rem;
+    }
+
+    .footer__inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 2rem;
+    }
+  }
+</style>

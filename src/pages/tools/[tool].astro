@@ -1,0 +1,385 @@
+---
+import type { ImageMetadata } from 'astro';
+import Layout from '../../layouts/Layout.astro';
+import ShaderBackground from '../../components/ShaderBackground.jsx';
+
+const logoModules = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/Logos/*.png',
+  { eager: true }
+);
+
+// Tool data references logos by path; resolve to the real bundled asset by filename.
+function resolveLogo(path: string): string {
+  const file = path.split('/').pop() ?? '';
+  const entry = Object.entries(logoModules).find(([p]) => p.endsWith(`/${file}`));
+  return entry ? entry[1].default.src : '';
+}
+
+export function getStaticPaths() {
+  const tools = [
+  {
+    slug: "ableton",
+    name: "Ableton",
+    logo: "/src/assets/tools/Logos/Abelton.png",
+    category: "Music Production / Audio",
+    blurb: "Ableton Live is my DAW for music production and game audio. I used it to compose and implement the full audio landscape for Palimpsest — ambient drones, sound effects, and the Attic Hum that plays during the game's inciting incident. It's where my interest in music theory, DJing, and game sound design converged into a single workflow.",
+    projects: [
+      { name: "Palimpsest", desc: "Composed and implemented all game audio including the Attic Hum scene", href: "/work/palimpsest" },
+    ]
+  },
+  {
+    slug: "aseprite",
+    name: "Aseprite",
+    logo: "/src/assets/tools/Logos/Aesprite.png",
+    category: "Pixel Art",
+    blurb: "Aseprite is the tool that gave Palimpsest its visual identity. After the week 6 pivot to an Aseprite-first workflow, every sprite, tile set, and animation in the game was built here — Nolan's walk cycle, character portraits, the town of Millfield, the movie theater interior. Working at 32x32 pixel resolution forced creative constraints that shaped the game's whole aesthetic.",
+    projects: [
+      { name: "Palimpsest", desc: "All pixel art, sprites, tilesets, and animations", href: "/work/palimpsest" },
+    ]
+  },
+  {
+    slug: "after-effects",
+    name: "After Effects",
+    logo: "/src/assets/tools/Logos/After Effects.png",
+    category: "Motion Graphics",
+    blurb: "After Effects is my tool for motion graphics and video post-production. I used it for Phi Kappa Psi marketing materials — motion graphics for social content and event promotions — and for Leave No Trace, my citizen action short film on beach pollution. It's where still design becomes time-based storytelling.",
+    projects: [
+      { name: "Phi Kappa Psi", desc: "Motion graphics and social media content", href: "/#work" },
+      { name: "Leave No Trace", desc: "Post-production and motion graphics for the short film", href: "/#work" },
+    ]
+  },
+  {
+    slug: "animate",
+    name: "Adobe Animate",
+    logo: "/src/assets/tools/Logos/Animate.png",
+    category: "Animation",
+    blurb: "Adobe Animate sits at the intersection of illustration and motion. I used it in AET coursework exploring animation fundamentals — frame-by-frame techniques, timeline-based workflows, and the principles that underpin all of my motion work across After Effects and game animation.",
+    projects: [
+      { name: "AET Coursework", desc: "Animation fundamentals and frame-by-frame techniques", href: "/#work" },
+    ]
+  },
+  {
+    slug: "astro",
+    name: "Astro",
+    logo: "/src/assets/tools/Logos/Astro.png",
+    category: "Web Framework",
+    blurb: "Astro is the framework powering this portfolio. Its islands architecture — ship zero JS by default, hydrate only what needs it — made it the right choice for a cinematic static site with a single WebGL React component. I'm building with it as part of my incoming PM internship at Cloudflare, where Astro is a primary focus of the stack.",
+    projects: [
+      { name: "This Portfolio", desc: "Built entirely in Astro with React islands for the WebGL gradient", href: "/" },
+    ]
+  },
+  {
+    slug: "chatgpt",
+    name: "ChatGPT",
+    logo: "/src/assets/tools/Logos/ChatGPT.png",
+    category: "AI / LLM",
+    blurb: "ChatGPT is part of my daily development and creative workflow — used for rapid prototyping, debugging, research synthesis, and brainstorming across projects. As a PM intern at Cloudflare I'll be working directly in the AI space, so understanding how people use and interact with LLMs is core to my work.",
+    projects: [
+      { name: "Across all projects", desc: "Research, debugging, and rapid prototyping", href: "/#work" },
+    ]
+  },
+  {
+    slug: "claude",
+    name: "Claude",
+    logo: "/src/assets/tools/Logos/Claude.png",
+    category: "AI / LLM",
+    blurb: "Claude is my primary AI collaborator — I used Claude Code to build significant portions of this portfolio, and Claude as a thinking partner across game design, narrative, and technical architecture decisions. The detail pages you're reading right now were written in collaboration with Claude based on deep project context.",
+    projects: [
+      { name: "This Portfolio", desc: "Built with Claude Code as the primary development tool", href: "/" },
+      { name: "Palimpsest", desc: "Narrative and architecture decisions", href: "/work/palimpsest" },
+    ]
+  },
+  {
+    slug: "figma",
+    name: "Figma",
+    logo: "/src/assets/tools/Logos/Figma.png",
+    category: "Design / Prototyping",
+    blurb: "Figma is where ideas become interfaces before a line of code is written. I used it to build The Public Ingredient — a full app pitch and prototype — and for UI/UX design across game and web projects. It's my primary tool for wireframing, component design, and communicating visual direction to collaborators.",
+    projects: [
+      { name: "The Public Ingredient", desc: "Full app pitch and interactive prototype", href: "/#work" },
+      { name: "Palimpsest", desc: "UI/UX system design and layout planning", href: "/work/palimpsest" },
+    ]
+  },
+  {
+    slug: "github",
+    name: "GitHub",
+    logo: "/src/assets/tools/Logos/Github.png",
+    category: "Version Control",
+    blurb: "GitHub is how every project I build is managed and shipped. Version control, collaboration, deployment pipelines — Increment deploys to Cloudflare Workers via GitHub, this portfolio lives in a repo, and Palimpsest's full 12-week development history is tracked commit by commit.",
+    projects: [
+      { name: "Increment", desc: "Deployment pipeline to Cloudflare Workers", href: "/work/increment" },
+      { name: "Palimpsest", desc: "Full game development version history", href: "/work/palimpsest" },
+      { name: "This Portfolio", desc: "Source and deployment", href: "/" },
+    ]
+  },
+  {
+    slug: "godot",
+    name: "Godot",
+    logo: "/src/assets/tools/Logos/Godot.png",
+    category: "Game Engine",
+    blurb: "Godot is the engine behind Palimpsest. I was the lead programmer on the team, building the full technical architecture — GameFlags, GameState, SceneRouter, DialogueService, CharacterManager — from scratch in GDScript. After a full rewrite in week 6 following our first playtest, the codebase became a clean service-layer pattern that the whole team could build on. Palimpsest debuted at the UT AET Showcase in April 2026.",
+    projects: [
+      { name: "Palimpsest", desc: "Lead programmer — full engine architecture in GDScript", href: "/work/palimpsest" },
+    ]
+  },
+  {
+    slug: "notion",
+    name: "Notion",
+    logo: "/src/assets/tools/Logos/Notion.png",
+    category: "Productivity / Docs",
+    blurb: "Notion is where Palimpsest's production lived — 12 weeks of weekly devlogs, narrative documents, playtest notes, and team coordination all ran through Notion. It's also my personal knowledge base for project planning, research synthesis, and the Obsidian-adjacent note system I use to track ideas across disciplines.",
+    projects: [
+      { name: "Palimpsest", desc: "12-week production devlog and team documentation", href: "/work/palimpsest" },
+    ]
+  },
+  {
+    slug: "obsidian",
+    name: "Obsidian",
+    logo: "/src/assets/tools/Logos/Obsidian.png",
+    category: "Knowledge Management",
+    blurb: "Obsidian is my second brain — a local-first, markdown-based note system where I map connections between projects, ideas, skills, and research. The project audit docs that inform this portfolio were written in Obsidian. It's where I think in long form before anything gets built.",
+    projects: [
+      { name: "Across all projects", desc: "Project planning, research, and knowledge management", href: "/#work" },
+    ]
+  },
+  {
+    slug: "palimpsest-logo",
+    name: "Palimpsest",
+    logo: "/src/assets/tools/Logos/Palimpsest Logo.png",
+    category: "Original IP",
+    blurb: "Palimpsest is my original game — a point-and-click narrative horror game built in Godot with a three-person team over 12 weeks. I was lead programmer. The game follows Nolan, a movie theater worker in the fictional town of Millfield, and uses deliberately uncanny AI-generated backgrounds as its horror language. It debuted publicly at the UT AET Showcase on April 9, 2026.",
+    projects: [
+      { name: "Palimpsest", desc: "Lead programmer, co-creator", href: "/work/palimpsest" },
+      { name: "Millfield County", desc: "The ARG website set in the same universe", href: "/work/millfield-county" },
+    ]
+  },
+  {
+    slug: "premiere",
+    name: "Premiere Pro",
+    logo: "/src/assets/tools/Logos/Premiere.png",
+    category: "Video Editing",
+    blurb: "Premiere Pro is my primary video editing tool. I used it for Leave No Trace — a citizen action short film about beach pollution — and for the Anchor Club weekly morning show where I cut and produced advertising content. It's also where Palimpsest's devlog footage and any future gameplay trailer will be assembled.",
+    projects: [
+      { name: "Leave No Trace", desc: "Full edit for the citizen action short film", href: "/#work" },
+      { name: "Anchor Club", desc: "Weekly morning show production and advertising", href: "/#work" },
+    ]
+  },
+  {
+    slug: "tableau",
+    name: "Tableau",
+    logo: "/src/assets/tools/Logos/Tableau.png",
+    category: "Data Visualization",
+    blurb: "Tableau is where raw data becomes visual argument. I built the Taco Bell Social Listening Dashboard in Tableau — pulling social media analytics into an interactive visualization of brand sentiment, engagement patterns, and campaign performance. Data viz is one of the through-lines across my work, from Tableau to Canvas API to Chart.js.",
+    projects: [
+      { name: "Taco Bell Social Listening Dashboard", desc: "Social media analytics and brand sentiment visualization", href: "/#work" },
+      { name: "The House Always Wins", desc: "Data-driven game design using real Connecticut wagering data", href: "/work/the-house-always-wins" },
+    ]
+  },
+  {
+    slug: "twine",
+    name: "Twine",
+    logo: "/src/assets/tools/Logos/Twine.png",
+    category: "Narrative / Game Dev",
+    blurb: "Twine is where narrative branches live. I built the Palimpsest Visual Novel in Twine — a separate text-based version of the Palimpsest story that lets the branching dialogue and world-building exist independently of the Godot game engine. It's a fast tool for prototyping narrative structure before committing to code.",
+    projects: [
+      { name: "Palimpsest Visual Novel", desc: "Full branching narrative built in Twine", href: "/work/palimpsest" },
+    ]
+  },
+  {
+    slug: "vscode",
+    name: "VSCode",
+    logo: "/src/assets/tools/Logos/VSCode.png",
+    category: "Development",
+    blurb: "VSCode is my primary editor for web and backend development. Every line of Increment — Cloudflare Workers TypeScript, vanilla HTML/CSS/JS frontend — was written here. It's also where this portfolio's Astro components live. Extensions, git integration, and the terminal make it the center of my development workflow.",
+    projects: [
+      { name: "Increment", desc: "Full-stack PWA development", href: "/work/increment" },
+      { name: "This Portfolio", desc: "Astro + React development", href: "/" },
+      { name: "Millfield County", desc: "Static HTML/CSS/JS ARG development", href: "/work/millfield-county" },
+    ]
+  },
+  {
+    slug: "windsurf",
+    name: "Windsurf",
+    logo: "/src/assets/tools/Logos/Windsurf.png",
+    category: "AI-Powered IDE",
+    blurb: "Windsurf is the AI-native VS Code fork I use for agentic coding sessions — particularly for Increment and early portfolio work. Its Cascade feature lets the AI hold full project context and make multi-file edits autonomously. As an incoming PM intern at Cloudflare working on AI tooling, understanding how agentic IDEs work from the inside is directly relevant.",
+    projects: [
+      { name: "Increment", desc: "Used Windsurf for agentic multi-file development sessions", href: "/work/increment" },
+    ]
+  },
+  ];
+
+  return tools.map((t) => ({ params: { tool: t.slug }, props: { tool: t } }));
+}
+
+const { tool } = Astro.props;
+const logoSrc = resolveLogo(tool.logo);
+---
+
+<Layout title={`${tool.name} — Hayden Porter`}>
+  <ShaderBackground client:only="react" />
+
+  <main class="tool-page">
+    <a href="/#tools" class="tool-page__back">← Back</a>
+    <div class="tool-page__inner">
+      <div class="tool-page__header">
+        <div class="tool-page__logo">
+          <img src={logoSrc} alt={tool.name} />
+        </div>
+        <div class="tool-page__meta">
+          <span class="tool-page__category">{tool.category}</span>
+          <h1 class="tool-page__name">{tool.name}</h1>
+          <p class="tool-page__blurb">{tool.blurb}</p>
+        </div>
+      </div>
+      <div class="tool-page__projects">
+        <span class="tool-page__eyebrow">Used In</span>
+        {
+          tool.projects.map((p) => (
+            <a href={p.href} class="tool-page__project-link">
+              <span class="tool-page__project-name">{p.name}</span>
+              <span class="tool-page__project-desc">{p.desc}</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .tool-page {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    padding: 6rem 4rem 4rem;
+    background: transparent;
+  }
+
+  .tool-page__back {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(0,0,0,0.55);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 4rem;
+    transition: color 0.2s ease;
+  }
+  .tool-page__back:hover { color: #000000; }
+
+  .tool-page__inner {
+    max-width: 1180px;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .tool-page__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 3rem;
+  }
+
+  .tool-page__logo {
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+    padding: 16px;
+    background: rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .tool-page__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .tool-page__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .tool-page__category {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(0,0,0,0.55);
+  }
+
+  .tool-page__name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 400;
+    color: #000000;
+    margin: 0;
+    text-shadow: 0 0 60px rgba(255,255,255,0.7);
+  }
+
+  .tool-page__blurb {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(0,0,0,0.7);
+    max-width: 560px;
+    text-shadow: 0 1px 12px rgba(255,255,255,0.7);
+  }
+
+  .tool-page__projects {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .tool-page__eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(0,0,0,0.55);
+    margin-bottom: 0.5rem;
+  }
+
+  .tool-page__project-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1.25rem 1.5rem;
+    background: rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.07);
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .tool-page__project-link:hover {
+    background: rgba(0,0,0,0.06);
+    border-color: rgba(0,0,0,0.15);
+  }
+
+  .tool-page__project-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #000000;
+  }
+
+  .tool-page__project-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(0,0,0,0.65);
+  }
+
+  @media (max-width: 768px) {
+    .tool-page {
+      padding: 5rem 1.5rem 3rem;
+    }
+
+    .tool-page__header {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+  }
+</style>

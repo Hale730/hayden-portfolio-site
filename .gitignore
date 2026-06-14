@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# local working / context docs (keep out of the public repo)
+AGENTS.md
+projects.md
+Hayden_New_Portfolio.md

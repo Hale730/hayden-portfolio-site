@@ -1,0 +1,66 @@
+---
+---
+
+<section class="about">
+  <div class="about__inner">
+    <span class="about__eyebrow" data-reveal>About</span>
+    <h2 class="about__statement" data-reveal style="--reveal-delay: 120;">
+      Creative technologist building at the intersection of code, story, and craft.
+    </h2>
+    <p class="about__bio" data-reveal style="--reveal-delay: 240;">
+      AET senior at UT Austin. Lead programmer on Palimpsest, a narrative horror
+      game shipped at the 2026 AET Showcase. Incoming PM intern at Cloudflare. I
+      make games, films, data visualizations, and whatever else the idea demands.
+    </p>
+  </div>
+</section>
+
+<style>
+  .about {
+    position: relative;
+    z-index: 2;
+    min-height: 100svh;
+    padding: clamp(8rem, 18vh, 14rem) 2rem;
+    background: transparent;
+    display: flex;
+    align-items: center;
+  }
+
+  .about__inner {
+    max-width: 1180px;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    align-items: flex-start;
+  }
+
+  .about__eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(0, 0, 0, 0.9);
+    font-weight: 600;
+  }
+
+  .about__statement {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    color: #000000;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-shadow:
+      0 0 80px rgba(255, 255, 255, 0.7),
+      0 2px 30px rgba(255, 255, 255, 0.6);
+  }
+
+  .about__bio {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: rgba(0, 0, 0, 0.75);
+    line-height: 1.8;
+    max-width: 620px;
+    text-shadow: 0 1px 12px rgba(255, 255, 255, 0.7);
+  }
+</style>
