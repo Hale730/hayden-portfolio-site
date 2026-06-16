@@ -54,7 +54,6 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1180px;
   width: 100%;
   margin: 0 auto;
 }
@@ -91,9 +90,8 @@ h3 {
   color: #ffffff;
   text-decoration: none;
   border: 1px solid rgba(255, 255, 255, 0.35);
-  padding: 0.5rem 1.25rem;
-  border-radius: 100px;
-  margin-left: auto;
+  padding: 0.55rem 1.4rem;
+  border-radius: 6px;
   transition:
     background 0.2s ease,
     border-color 0.2s ease;
@@ -102,6 +100,36 @@ h3 {
 .site-nav__cta:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.7);
+}
+
+.site-nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: auto;
+}
+
+.site-nav__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 6px;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.site-nav__icon:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.site-nav__icon svg {
+  display: block;
 }
 
 

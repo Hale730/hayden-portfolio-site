@@ -36,28 +36,27 @@ const placedTools = [
 ---
 
 <section class="tools" id="tools">
-  <div class="tools__inner">
-    <span class="tools__eyebrow" data-reveal>Tools &amp; Tech</span>
-  </div>
-
   <div class="tools__strip" data-reveal>
     <canvas class="tools__noise"></canvas>
-    <div class="tools__grid">
-      {
-        placedTools.map((tool) => (
-          <a
-            class="tools__item"
-            href={`/tools/${tool.slug}`}
-            title={tool.name}
-            style={`grid-row:${tool.row};grid-column:${tool.col};`}
-          >
-            {tool.image && (
-              <img src={tool.image.src} alt={tool.name} loading="lazy" />
-            )}
-            <span class="tools__name">{tool.name}</span>
-          </a>
-        ))
-      }
+    <div class="tools__content">
+      <h2 class="tools__title">Tools and Skills</h2>
+      <div class="tools__grid">
+        {
+          placedTools.map((tool) => (
+            <a
+              class="tools__item"
+              href={`/tools/${tool.slug}`}
+              title={tool.name}
+              style={`grid-row:${tool.row};grid-column:${tool.col};`}
+            >
+              {tool.image && (
+                <img src={tool.image.src} alt={tool.name} loading="lazy" />
+              )}
+              <span class="tools__name">{tool.name}</span>
+            </a>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>
@@ -67,28 +66,11 @@ const placedTools = [
     position: relative;
     z-index: 2;
     background: transparent;
-    padding: 5rem 0;
-  }
-
-  .tools__inner {
-    max-width: 1340px;
-    margin: 0 auto;
-    padding: 0 4rem 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .tools__eyebrow {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: rgba(0, 0, 0, 0.55);
+    padding: 6rem 0;
   }
 
   /* Full-bleed thick strip with a dark, slightly-transparent backdrop. The
-     encryption noise runs on the canvas behind; the logo grid sits on top. */
+     encryption noise runs on the canvas behind; the title + logo grid sit on top. */
   .tools__strip {
     position: relative;
     width: 100vw;
@@ -96,8 +78,24 @@ const placedTools = [
     background: rgba(0, 0, 0, 0.6);
     border-top: 1px solid rgba(0, 0, 0, 0.35);
     border-bottom: 1px solid rgba(0, 0, 0, 0.35);
-    padding: 2.5rem 0;
+    padding: 5rem 0;
     overflow: hidden;
+  }
+
+  .tools__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .tools__title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 3rem;
   }
 
   .tools__noise {
@@ -143,7 +141,7 @@ const placedTools = [
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16%;
+    padding: 11%;
     text-decoration: none;
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
