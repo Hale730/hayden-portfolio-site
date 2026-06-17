@@ -1,5 +1,6 @@
 import type { ImageMetadata } from 'astro';
 import palimpsestHero from '../assets/Palimpsest Assets/Library Hero.png';
+import millfieldVoss from '../assets/millfield_assets/Millfield_Project_Assets/Voss_SlideBackground.png';
 
 export type Project = {
   slug: string;
@@ -10,6 +11,8 @@ export type Project = {
   palette: { c1: string; c2: string; c3: string; text: string };
   link?: { label: string; href: string };
   image?: ImageMetadata;
+  // CSS object-position for the work card image (e.g. 'left' to show that edge).
+  imageFocus?: string;
 };
 
 // Newest first → oldest last. Facts, dates, palettes from projects.md.
@@ -29,6 +32,8 @@ export const projects: Project[] = [
     blurb:
       'A static narrative website pretending to be a calm 2002 county portal. Log into the staff intranet with a clue from a published article, dig through a restricted archive into a cold case, then dial a working touch tone phone that rewrites the homepage. Vanilla HTML, CSS, and JavaScript. A companion to Palimpsest, set in the same town.',
     palette: { c1: '#1E5F8C', c2: '#2E8B7A', c3: '#8A8A3C', text: '#F2EFE0' },
+    image: millfieldVoss,
+    imageFocus: 'left',
   },
   {
     slug: 'palimpsest',

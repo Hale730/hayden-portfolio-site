@@ -37,7 +37,12 @@ import { projects } from '../data/projects';
           <a class="proj__inner" href={`/work/${project.slug}`}>
             <div class="proj__media">
               {project.image ? (
-                <img src={project.image.src} alt={project.title} loading="lazy" />
+                <img
+                  src={project.image.src}
+                  alt={project.title}
+                  loading="lazy"
+                  style={project.imageFocus ? `object-position: ${project.imageFocus};` : undefined}
+                />
               ) : (
                 <div class="proj__placeholder">
                   <span>Image Needed</span>

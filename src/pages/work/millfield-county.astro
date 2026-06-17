@@ -1,80 +1,127 @@
 ---
 import type { ImageMetadata } from 'astro';
 import Layout from '../../layouts/Layout.astro';
+import town from '../../assets/millfield_assets/Millfield_Project_Assets/Townhall.png';
+import school from '../../assets/millfield_assets/Millfield_Project_Assets/Millfield_School.png';
+import palimpsest from '../../assets/millfield_assets/Millfield_Project_Assets/Palimpsest Slide.png';
 
-// Pull every background frame and sort by filename so the sequence is in order.
-const modules = import.meta.glob<{ default: ImageMetadata }>(
+// Background frames for the cinematic scroll background, in sequence order.
+const frameMods = import.meta.glob<{ default: ImageMetadata }>(
   '../../assets/millfield_assets/millfield_background/*.jpg',
   { eager: true }
 );
-
-const frames = Object.entries(modules)
+const frames = Object.entries(frameMods)
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([, mod]) => mod.default.src);
+
+const tools = [
+  { tool: 'VS Code', role: 'Development' },
+  { tool: 'Codex', role: 'Development' },
+  { tool: 'ChatGPT', role: 'Image generation' },
+  { tool: 'Obsidian', role: 'Writing' },
+  { tool: 'ElevenLabs', role: 'Audio production' },
+  { tool: 'Cloudflare', role: 'Hosting and domain registration' },
+];
 ---
 
 <Layout title="Millfield County — Hayden Porter">
-  <!-- Scroll-scrubbed image sequence drawn to a single fixed canvas. -->
+  <!-- Replaces the shared brand: a cliché 2002 button + the project name -->
+  <a href="/work" class="mc-navback" aria-label="Back to all work">
+    <span class="mc-navback__btn" aria-hidden="true">&#8592;</span>
+    <span class="mc-navback__name">Millfield County</span>
+  </a>
+
   <canvas id="mc-seq" class="mc-seq" aria-hidden="true"></canvas>
+  <div class="mc-scrim" aria-hidden="true"></div>
 
-  <main class="mc">
-    <a href="/work" class="mc__back">&#8592; All work</a>
+  <div class="mc-skin">
+    <div class="mc-doc">
+      <section class="mc-panel">
+        <h1 class="mc-panel__bar">
+          <a
+            class="mc-panel__bar-link"
+            href="https://millfieldcounty.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >millfieldcounty.com</a>
+        </h1>
+        <div class="mc-panel__body">
+          <p class="mc-lead">
+            An alternate reality game disguised as a small town government website.
+          </p>
 
-    <section class="mc__panel">
-      <span class="mc__eyebrow">Millfield County · ARG</span>
-      <h1 class="mc__title">Welcome to Millfield County</h1>
-      <p class="mc__lead">
-        Filler copy so there&rsquo;s enough to scroll and watch the background
-        sequence play. Replace all of this with the real Millfield content.
-      </p>
-    </section>
+          <figure class="mc-fig">
+            <img src={town.src} alt="The Millfield County town hall" loading="lazy" />
+          </figure>
 
-    <section class="mc__panel">
-      <h2 class="mc__h2">A quiet 2002 county portal</h2>
-      <p class="mc__body">
-        Lorem ipsum placeholder text. Scroll down and the frames advance with you.
-        Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-        ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget.
-      </p>
-    </section>
+          <p>
+            <a href="https://millfieldcounty.com" target="_blank" rel="noopener noreferrer"
+              >millfieldcounty.com</a
+            > looks like an ordinary county portal from 2002. A news
+            carousel, a staff directory, a calendar, a contact page. Spend a few minutes
+            clicking around and something feels wrong. Read the articles, listen to the
+            voicemails, and solve the puzzle to uncover the unsettling story of Millfield
+            County.
+          </p>
 
-    <section class="mc__panel">
-      <h2 class="mc__h2">The staff intranet</h2>
-      <p class="mc__body">
-        More filler. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
-        Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi,
-        condimentum sed, commodo vitae, ornare sit amet, wisi.
-      </p>
-    </section>
+          <figure class="mc-fig">
+            <img src={school.src} alt="Millfield Middle School" loading="lazy" />
+          </figure>
 
-    <section class="mc__panel">
-      <h2 class="mc__h2">A cold case in the archive</h2>
-      <p class="mc__body">
-        Keep scrolling to see the full range of the sequence. Aenean fermentum,
-        elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus
-        lacus enim ac dui. Donec non enim in turpis pulvinar facilisis.
-      </p>
-    </section>
+          <p>
+            I built the site solo for my Exploring User Interaction class at UT Austin,
+            where the goal was to use interface as a storytelling medium. The screens
+            themselves are the puzzle. A staff intranet that you log into using a clue
+            hidden in an article. A records archive that unlocks one document at a time,
+            leading from a police report to four family statements to a final recorded
+            interview. A working phone dialer that rewrites the homepage when you call the
+            right number. Every detail is committed to its era, down to the period
+            typography and a recorded voicemail behind each county phone number.
+          </p>
 
-    <section class="mc__panel">
-      <h2 class="mc__h2">The touch-tone dialer</h2>
-      <p class="mc__body">
-        Filler section. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-        ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-      </p>
-    </section>
+          <figure class="mc-fig">
+            <img src={palimpsest.src} alt="Palimpsest, the game set in the same town" loading="lazy" />
+          </figure>
 
-    <section class="mc__panel mc__panel--end">
-      <h2 class="mc__h2">End of the reel</h2>
-      <p class="mc__body">
-        This is the last filler block, so the sequence should land on its final
-        frame right about here.
-      </p>
-    </section>
-  </main>
+          <p>
+            <a href="https://millfieldcounty.com" target="_blank" rel="noopener noreferrer"
+              >millfieldcounty.com</a
+            > is a spinoff of my indie horror game
+            <a href="/work/palimpsest">Palimpsest</a>, which takes place in the same town
+            and shares a similar tone. You can explore my other work
+            <a href="/work/palimpsest">Palimpsest</a> if you are interested.
+          </p>
+        </div>
+
+        <h2 class="mc-panel__bar mc-panel__bar--sub">Tools</h2>
+        <div class="mc-panel__body">
+          <p>Here are some of the tools I used to create this project.</p>
+          <table class="mc-tools">
+            <thead>
+              <tr>
+                <th>Tool</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                tools.map((row) => (
+                  <tr>
+                    <td>{row.tool}</td>
+                    <td>{row.role}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
 </Layout>
 
 <style>
+  /* Footage background, scrubbed by page scroll */
   .mc-seq {
     position: fixed;
     inset: 0;
@@ -85,79 +132,241 @@ const frames = Object.entries(modules)
     background: #0b0b0f;
   }
 
-  .mc {
+  /* Dim the footage so the county page reads clearly on top of it */
+  .mc-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: rgba(10, 12, 16, 0.5);
+  }
+
+  /* Header back-link */
+  .mc-navback {
+    position: fixed;
+    top: 0.7rem;
+    left: 2rem;
+    height: 40px;
+    z-index: 101;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+  }
+
+  .mc-navback__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 28px;
+    color: #1a1a1a;
+    font-size: 1rem;
+    line-height: 1;
+    background: linear-gradient(180deg, #fdfdfb 0%, #d8d4ca 100%);
+    border: 2px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #7e7a70;
+    border-bottom-color: #7e7a70;
+  }
+
+  .mc-navback:hover .mc-navback__btn {
+    background: linear-gradient(180deg, #ffffff 0%, #e4e0d6 100%);
+  }
+
+  .mc-navback:active .mc-navback__btn {
+    border-top-color: #7e7a70;
+    border-left-color: #7e7a70;
+    border-right-color: #ffffff;
+    border-bottom-color: #ffffff;
+  }
+
+  .mc-navback__name {
+    font-family: Verdana, Geneva, Tahoma, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Left-aligned county "page" over the footage */
+  .mc-skin {
     position: relative;
     z-index: 2;
+    padding: 8rem 1.5rem 5rem;
+    font-family: Verdana, Geneva, Tahoma, Arial, sans-serif;
+  }
+
+  /* Tan/gray county page, holding the module panels */
+  .mc-doc {
+    max-width: 860px;
+    margin: 0;
+    padding: 1.1rem;
+    background: #c7c0b0;
+    border: 2px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #6d7683;
+    border-bottom-color: #6d7683;
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.55);
+    color: #26303c;
+  }
+
+  /* Blue beveled module panels */
+  .mc-panel {
+    background: #e9edf2;
+    border: 2px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #6d7683;
+    border-bottom-color: #6d7683;
+  }
+
+  .mc-panel + .mc-panel {
+    margin-top: 1.1rem;
+  }
+
+  .mc-panel__bar {
+    margin: 0;
+    background: linear-gradient(180deg, #3a6db0 0%, #285a8e 55%, #1f4570 100%);
     color: #ffffff;
-    padding: 0 2rem;
-  }
-
-  .mc__back {
-    position: fixed;
-    top: 5rem;
-    left: 2rem;
-    z-index: 3;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: rgba(255, 255, 255, 0.85);
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
-  }
-
-  .mc__panel {
-    min-height: 100vh;
-    max-width: 720px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.85);
-  }
-
-  .mc__panel--end {
-    min-height: 60vh;
-  }
-
-  .mc__eyebrow {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.75);
-    margin-bottom: 1rem;
-  }
-
-  .mc__title {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2.6rem, 6vw, 4.5rem);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.25rem;
-  }
-
-  .mc__h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2rem, 4.5vw, 3rem);
-    line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-
-  .mc__lead {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.1rem;
-    line-height: 1.7;
-    max-width: 48ch;
-    color: rgba(255, 255, 255, 0.92);
-  }
-
-  .mc__body {
-    font-family: 'Inter', sans-serif;
+    font-family: Verdana, Geneva, Tahoma, Arial, sans-serif;
     font-size: 1rem;
-    line-height: 1.8;
-    max-width: 52ch;
-    color: rgba(255, 255, 255, 0.88);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    padding: 0.5rem 0.85rem;
+    border-bottom: 1px solid #16304f;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Same bar reused mid-panel as a section header (Tools) */
+  .mc-panel__bar--sub {
+    border-top: 2px solid #16304f;
+  }
+
+  /* The site title doubles as a link to the live site, white on the bar */
+  .mc-panel__bar-link {
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .mc-panel__bar-link:hover {
+    text-decoration: underline;
+  }
+
+  .mc-panel__body {
+    padding: 1.1rem 1.15rem 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: #26303c;
+  }
+
+  .mc-panel__body > * + * {
+    margin-top: 1rem;
+  }
+
+  .mc-lead {
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: #1f4570;
+  }
+
+  .mc-panel__body a {
+    color: #1a4f8a;
+    text-decoration: underline;
+  }
+
+  .mc-panel__body a:hover {
+    color: #0f3a6b;
+  }
+
+  /* Featured images, framed like county article art */
+  .mc-fig {
+    max-width: 80%;
+    margin: 1.25rem auto;
+    border: 2px solid;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #6d7683;
+    border-bottom-color: #6d7683;
+    background: #d8d4c8;
+  }
+
+  .mc-fig img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Period county table */
+  .mc-tools {
+    width: 100%;
+    max-width: 520px;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    color: #1f2a36;
+    background: #ffffff;
+    border: 1px solid #9aa6b2;
+  }
+
+  .mc-tools th {
+    background: linear-gradient(180deg, #3a6db0 0%, #285a8e 55%, #1f4570 100%);
+    color: #ffffff;
+    text-align: left;
+    padding: 0.45rem 0.7rem;
+    border-bottom: 1px solid #16304f;
+  }
+
+  .mc-tools td {
+    padding: 0.45rem 0.7rem;
+    border-top: 1px solid #c8d0da;
+  }
+
+  .mc-tools tbody tr:nth-child(even) {
+    background: #eef1f5;
+  }
+
+  @media (min-width: 768px) {
+    .mc-skin {
+      padding: 9rem 2rem 6rem 5rem;
+    }
+  }
+</style>
+
+<!-- Re-skin the shared nav to the Millfield county UI, only on this page.
+     :has(.mc-skin) guards it so it can't affect other pages. -->
+<style is:global>
+  /* Drop the center nav links and the shared brand on this page. */
+  html:has(.mc-skin) .site-nav__links,
+  html:has(.mc-skin) .brand {
+    display: none;
+  }
+
+  html:has(.mc-skin) .site-nav {
+    background: linear-gradient(180deg, #3a6db0 0%, #245184 55%, #1c3e66 100%);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 2px solid #16304f;
+    box-shadow: inset 0 1px 0 #6f9bd4;
+  }
+
+  html:has(.mc-skin) .site-nav__cta,
+  html:has(.mc-skin) .site-nav__icon {
+    font-family: Verdana, Geneva, Tahoma, Arial, sans-serif;
+    color: #ffffff;
+    border: 2px solid;
+    border-top-color: #6f9bd4;
+    border-left-color: #6f9bd4;
+    border-right-color: #16304f;
+    border-bottom-color: #16304f;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  html:has(.mc-skin) .site-nav__cta:hover,
+  html:has(.mc-skin) .site-nav__icon:hover {
+    background: rgba(255, 255, 255, 0.2);
   }
 </style>
 
@@ -192,13 +401,10 @@ const frames = Object.entries(modules)
     const resize = () => {
       canvas.width = Math.round(window.innerWidth * dpr);
       canvas.height = Math.round(window.innerHeight * dpr);
-      const i = frameForScroll();
-      // force a redraw at the new size
       current = -1;
-      draw(i);
+      draw(frameForScroll());
     };
 
-    // Preload every frame; draw as soon as the relevant one is ready.
     frames.forEach((src, idx) => {
       const img = new Image();
       img.onload = () => {
