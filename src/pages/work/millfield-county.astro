@@ -138,15 +138,15 @@ const tools = [
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background: rgba(10, 12, 16, 0.5);
+    background: rgba(10, 12, 16, 0.2);
   }
 
   /* Header back-link */
   .mc-navback {
     position: fixed;
-    top: 0.7rem;
+    top: 0;
     left: 2rem;
-    height: 40px;
+    padding: 0.85rem 0;
     z-index: 101;
     display: flex;
     align-items: center;
@@ -200,8 +200,8 @@ const tools = [
 
   /* Tan/gray county page, holding the module panels */
   .mc-doc {
-    max-width: 860px;
-    margin: 0;
+    max-width: 1080px;
+    margin: 0 auto;
     padding: 1.1rem;
     background: #c7c0b0;
     border: 2px solid;
@@ -215,7 +215,7 @@ const tools = [
 
   /* Blue beveled module panels */
   .mc-panel {
-    background: #e9edf2;
+    background: #fbf8f1;
     border: 2px solid;
     border-top-color: #ffffff;
     border-left-color: #ffffff;
@@ -232,10 +232,10 @@ const tools = [
     background: linear-gradient(180deg, #3a6db0 0%, #285a8e 55%, #1f4570 100%);
     color: #ffffff;
     font-family: Verdana, Geneva, Tahoma, Arial, sans-serif;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 700;
     letter-spacing: 0.01em;
-    padding: 0.5rem 0.85rem;
+    padding: 0.6rem 1rem;
     border-bottom: 1px solid #16304f;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
   }
@@ -256,9 +256,9 @@ const tools = [
   }
 
   .mc-panel__body {
-    padding: 1.1rem 1.15rem 1.25rem;
-    font-size: 0.9rem;
-    line-height: 1.65;
+    padding: 1.4rem 1.5rem 1.6rem;
+    font-size: 1.15rem;
+    line-height: 1.7;
     color: #26303c;
   }
 
@@ -268,7 +268,7 @@ const tools = [
 
   .mc-lead {
     font-weight: 700;
-    font-size: 1.02rem;
+    font-size: 1.4rem;
     color: #1f4570;
   }
 
@@ -304,7 +304,7 @@ const tools = [
     width: 100%;
     max-width: 520px;
     border-collapse: collapse;
-    font-size: 0.88rem;
+    font-size: 1.05rem;
     color: #1f2a36;
     background: #ffffff;
     border: 1px solid #9aa6b2;
@@ -329,7 +329,7 @@ const tools = [
 
   @media (min-width: 768px) {
     .mc-skin {
-      padding: 9rem 2rem 6rem 5rem;
+      padding: 9rem 2rem 6rem;
     }
   }
 </style>
@@ -337,36 +337,37 @@ const tools = [
 <!-- Re-skin the shared nav to the Millfield county UI, only on this page.
      :has(.mc-skin) guards it so it can't affect other pages. -->
 <style is:global>
-  /* Drop the center nav links and the shared brand on this page. */
+  /* Drop the center nav links and brand label slot on this page. */
   html:has(.mc-skin) .site-nav__links,
-  html:has(.mc-skin) .brand {
+  html:has(.mc-skin) .site-nav__brand-slot {
     display: none;
   }
 
   html:has(.mc-skin) .site-nav {
+    position: fixed;
     background: linear-gradient(180deg, #3a6db0 0%, #245184 55%, #1c3e66 100%);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
     border-bottom: 2px solid #16304f;
     box-shadow: inset 0 1px 0 #6f9bd4;
+  }
+
+  html:has(.mc-skin) .site-nav__actions {
+    border-left: none;
+  }
+
+  html:has(.mc-skin) .site-nav__actions > * {
+    border-color: rgba(255, 255, 255, 0.2);
   }
 
   html:has(.mc-skin) .site-nav__cta,
   html:has(.mc-skin) .site-nav__icon {
     font-family: Verdana, Geneva, Tahoma, Arial, sans-serif;
     color: #ffffff;
-    border: 2px solid;
-    border-top-color: #6f9bd4;
-    border-left-color: #6f9bd4;
-    border-right-color: #16304f;
-    border-bottom-color: #16304f;
-    border-radius: 2px;
-    background: rgba(255, 255, 255, 0.08);
+    opacity: 1;
   }
 
   html:has(.mc-skin) .site-nav__cta:hover,
   html:has(.mc-skin) .site-nav__icon:hover {
-    background: rgba(255, 255, 255, 0.2);
+    opacity: 0.75;
   }
 </style>
 

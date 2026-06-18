@@ -25,79 +25,15 @@ const {
       rel="stylesheet"
     />
     <title>{title}</title>
-    <style>
-      .brand {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 101;
-        display: flex;
-        align-items: center;
-        font-family: 'Inter', sans-serif;
-        font-size: 0.8rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        color: rgba(0, 0, 0, 0.6);
-        white-space: nowrap;
-        transform: translateY(-50%);
-        pointer-events: none;
-        animation: brandIn 0.9s ease 0.2s both;
-      }
-
-      .brand__name {
-        display: inline-block;
-        max-width: 0;
-        margin-right: 0;
-        overflow: hidden;
-        opacity: 0;
-        color: inherit;
-        font-weight: 600;
-        text-decoration: none;
-        pointer-events: auto;
-        transform: translateX(-12px);
-        transition:
-          max-width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-          margin-right 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-          opacity 0.45s ease,
-          transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-
-      .brand.is-named .brand__name {
-        max-width: 16rem;
-        margin-right: 0.45rem;
-        opacity: 1;
-        transform: translateX(0);
-      }
-
-      @keyframes brandIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .brand {
-          animation: none;
-        }
-        .brand__name {
-          transition: none;
-        }
-      }
-    </style>
   </head>
   <body>
-    <div class="brand" data-brand>
-      <a href="/" class="brand__name" data-brand-name>Hayden Porter</a>
-      <span class="brand__label">Creative Portfolio</span>
-    </div>
-
     <nav class="site-nav">
       <div class="site-nav__inner">
+        <div class="site-nav__brand-slot">
+          <span class="site-nav__label">Creative Portfolio</span>
+        </div>
         <div class="site-nav__links">
+          <div class="site-nav__hover-box" aria-hidden="true"></div>
           <a href="/about">About</a>
           <a href="/work">Work</a>
           <a href="#tools">Tools</a>
@@ -123,91 +59,47 @@ const {
     <slot />
 
     <script>
-      // Scroll-driven brand: the "Creative Portfolio" label starts over the
-      // (invisible) hero eyebrow, travels up with the page, then sticks to the
-      // nav. Once you scroll past the hero title, "Hayden Porter" slides in.
-      const brand = document.querySelector<HTMLElement>('.brand');
-      const navInner = document.querySelector<HTMLElement>('.site-nav__inner');
+      // Nav hover box: slides down on first enter, slides sideways between links,
+      // slides up on leave. Never goes up-then-down when crossing between links.
+      const hoverBox = document.querySelector<HTMLElement>('.site-nav__hover-box');
+      const linksContainer = document.querySelector<HTMLElement>('.site-nav__links');
+      const navLinks = linksContainer
+        ? Array.from(linksContainer.querySelectorAll<HTMLElement>('a'))
+        : [];
 
-      if (brand && navInner) {
-        const anchor = document.querySelector<HTMLElement>('[data-brand-anchor]');
-        const heroTitle = document.querySelector<HTMLElement>('.hero__title');
+      if (hoverBox && linksContainer && navLinks.length) {
+        let isInside = false;
 
-        // If there's no hero (non-home pages), show the full brand statically.
-        brand.setAttribute('aria-hidden', anchor ? 'true' : 'false');
-
-        let startCenterY = 0;
-        let startLeft = 0;
-        let navCenterY = 0;
-        let navLeft = 0;
-        let stickScroll = 1;
-        let nameRevealScroll = 0;
-
-        const measure = () => {
-          const innerRect = navInner.getBoundingClientRect();
-          navCenterY = innerRect.top + innerRect.height / 2;
-          navLeft = innerRect.left;
-
-          if (anchor) {
-            const r = anchor.getBoundingClientRect();
-            startCenterY = r.top + r.height / 2 + window.scrollY;
-            startLeft = r.left;
-            stickScroll = Math.max(1, startCenterY - navCenterY);
-          } else {
-            startCenterY = navCenterY;
-            startLeft = navLeft;
-            stickScroll = 1;
-          }
-
-          if (heroTitle) {
-            const tr = heroTitle.getBoundingClientRect();
-            const titleCenterY = tr.top + tr.height / 2 + window.scrollY;
-            nameRevealScroll = Math.max(stickScroll, titleCenterY - navCenterY);
-          } else {
-            nameRevealScroll = 0;
-          }
+        const moveTo = (link: HTMLElement) => {
+          const containerRect = linksContainer.getBoundingClientRect();
+          const linkRect = link.getBoundingClientRect();
+          hoverBox.style.left = `${linkRect.left - containerRect.left}px`;
+          hoverBox.style.width = `${linkRect.width}px`;
         };
 
-        const render = () => {
-          const y = window.scrollY;
-          const vpCenterY = Math.max(navCenterY, startCenterY - y);
+        navLinks.forEach((link) => {
+          link.addEventListener('mouseenter', () => {
+            if (!isInside) {
+              // Entering from outside: snap position without transition, then slide down.
+              hoverBox.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+              moveTo(link);
+              hoverBox.style.transform = 'translateY(-100%)';
+              // Force reflow so the browser registers the start state before animating.
+              hoverBox.offsetHeight;
+              hoverBox.style.transition = '';
+              hoverBox.style.transform = 'translateY(0)';
+              isInside = true;
+            } else {
+              // Moving between links: slide horizontally only, no vertical movement.
+              moveTo(link);
+            }
+          });
+        });
 
-          // Hold the same horizontal position the whole way up — only move
-          // vertically. "Hayden Porter" sliding in is what shifts it sideways.
-          brand.style.top = `${vpCenterY}px`;
-          brand.style.left = `${startLeft}px`;
-
-          // Fade from dark (over the light hero) to light (in the dark header).
-          // With no hero anchor (other pages) the brand is docked from the start.
-          const p = anchor ? Math.min(1, y / stickScroll) : 1;
-          const v = Math.round(255 * p);
-          brand.style.color = `rgb(${v}, ${v}, ${v})`;
-
-          brand.classList.toggle('is-named', y >= nameRevealScroll);
-        };
-
-        const onScroll = () => {
-          window.requestAnimationFrame(render);
-        };
-
-        const remeasure = () => {
-          measure();
-          render();
-        };
-
-        measure();
-        render();
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', remeasure);
-        window.addEventListener('load', remeasure);
-
-        // Re-center whenever the nav (or hero anchor) changes size — e.g. after
-        // web fonts load or nav padding changes — so the dock point never goes stale.
-        if (typeof ResizeObserver !== 'undefined') {
-          const ro = new ResizeObserver(remeasure);
-          ro.observe(navInner);
-          if (anchor) ro.observe(anchor);
-        }
+        linksContainer.addEventListener('mouseleave', () => {
+          hoverBox.style.transform = 'translateY(-100%)';
+          isInside = false;
+        });
       }
 
       const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');

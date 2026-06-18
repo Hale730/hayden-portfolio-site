@@ -39,46 +39,92 @@ h3 {
 }
 
 .site-nav {
-  position: fixed;
+  /* Not sticky — sits at the top of the page and scrolls away with content. */
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 0.85rem 2rem;
-  background: rgba(10, 10, 15, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  padding: 0;
+  background: #ffffff;
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.25);
 }
 
 .site-nav__inner {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
   margin: 0 auto;
 }
 
-.site-nav__links {
+.site-nav__brand-slot {
   display: flex;
-  gap: 2.5rem;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  align-items: center;
+  padding: 0.85rem 1.6rem;
+  border-right: 1px dotted rgba(0, 0, 0, 0.25);
+  min-width: 0;
 }
 
-.site-nav__links a {
+.site-nav__label {
   font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+}
+
+/* Dotted vertical dividers come from the neighboring sections (brand-slot
+   border-right and actions border-left). No border here so the hover box
+   can sit flush with those dividers without a 1px offset from overflow clipping. */
+.site-nav__links {
+  display: flex;
+  align-items: stretch;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  overflow: hidden;
+}
+
+.site-nav__links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  padding: 0 1.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(0, 0, 0, 0.45);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .site-nav__links a:hover {
-  color: #ffffff;
+  color: #000000;
+}
+
+/* Sliding highlight box — JS moves it horizontally between links,
+   slides it down on enter and up on leave. */
+.site-nav__hover-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background: rgba(62, 106, 228, 0.32);
+  pointer-events: none;
+  transform: translateY(-100%);
+  transition:
+    left 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .site-nav__cta {
@@ -87,45 +133,48 @@ h3 {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #ffffff;
+  color: #000000;
   text-decoration: none;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  padding: 0.55rem 1.4rem;
-  border-radius: 6px;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease;
+  /* No border/radius/padding overrides — let .site-nav__actions > * handle those. */
+  transition: opacity 0.2s ease;
 }
 
 .site-nav__cta:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.7);
+  opacity: 0.55;
 }
 
 .site-nav__actions {
   display: flex;
-  align-items: center;
-  gap: 0.6rem;
+  align-items: stretch;
+  gap: 0;
   margin-left: auto;
+  border-left: 1px dotted rgba(0, 0, 0, 0.25);
+}
+
+/* Each action item gets its own dotted right divider */
+.site-nav__actions > * {
+  display: flex;
+  align-items: center;
+  padding: 0.85rem 1.2rem;
+  border-right: 1px dotted rgba(0, 0, 0, 0.25);
 }
 
 .site-nav__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 6px;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease;
+  width: auto;
+  height: auto;
+  color: #000000;
+  border: none;
+  border-radius: 0;
+  transition: opacity 0.2s ease;
 }
 
 .site-nav__icon:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.7);
+  background: none;
+  border-color: transparent;
+  opacity: 0.55;
 }
 
 .site-nav__icon svg {
