@@ -1,6 +1,12 @@
 import type { ImageMetadata } from 'astro';
-import palimpsestHero from '../assets/Palimpsest Assets/Library Hero.png';
+import cloudflareThumb from '../assets/Project Assets/Cloudflare/cloudflarethumbnail.webp';
+import incrementThumb from '../assets/Project Assets/Increment/Increment_Thumbnail.png';
 import millfieldVoss from '../assets/millfield_assets/Millfield_Project_Assets/Voss_SlideBackground.png';
+import palimpsestThumb from '../assets/Project Assets/Palimpsest/Palimpest_Thumbnail.png';
+import houseThumb from '../assets/Project Assets/HouseAlwaysWins/House_Thumbnail.webp';
+import tacoThumb from '../assets/Project Assets/TacoBell_Thumb.jpg';
+import publicIngredientThumb from '../assets/Project Assets/PublicIngredient_Thumbnail.webp';
+import leaveNoTraceThumb from '../assets/Project Assets/LeaveNoTrace_Thumbnail.webp';
 
 export type Project = {
   slug: string;
@@ -18,12 +24,22 @@ export type Project = {
 // Newest first → oldest last. Facts, dates, palettes from projects.md.
 export const projects: Project[] = [
   {
+    slug: 'cloudflare-internship',
+    title: 'Cloudflare Internship',
+    date: 'Summer 2026',
+    blurb:
+      'Incoming Product Manager intern at Cloudflare. Working on the edge network platform team.',
+    palette: { c1: '#FFFFFF', c2: '#FF5D1D', c3: '#0A0A0A', text: '#0A0A0A' },
+    image: cloudflareThumb,
+  },
+  {
     slug: 'increment',
     title: 'Increment',
     date: 'May 2026',
     blurb:
       'A mobile-first PWA workout tracker running as a single Cloudflare Worker on the edge. Google sign in, session logging, analytics, a weekly plan builder, and an exercise library. Built solo across the whole stack with D1 and Chart.js. Active, not deployed publicly yet.',
     palette: { c1: '#1E40AF', c2: '#2563EB', c3: '#22D3EE', text: '#F0F9FF' },
+    image: incrementThumb,
   },
   {
     slug: 'millfield-county',
@@ -46,7 +62,7 @@ export const projects: Project[] = [
       label: 'View on Notion',
       href: 'https://app.notion.com/p/haydenporter/Palimpsest-2D-Horror-Game-In-Dev-27a6b625dba38034a5f5e1a8c7f7e5f1',
     },
-    image: palimpsestHero,
+    image: palimpsestThumb,
   },
   {
     slug: 'the-house-always-wins',
@@ -59,18 +75,20 @@ export const projects: Project[] = [
       label: 'View on Notion',
       href: 'https://app.notion.com/p/haydenporter/The-House-Always-Wins-3126b625dba3808d9db8fd0cc5417a83',
     },
+    image: houseThumb,
   },
   {
     slug: 'taco-bell-dashboard',
     title: 'Taco Bell Social Listening Dashboard',
     date: 'April 2025',
     blurb:
-      'An interactive Tableau dashboard reading Taco Bell’s social performance across reach, sentiment, and category engagement. A 9 PM engagement peak, 100K posts, and 100.73B cumulative reach. This work earned my Tableau Desktop Analyst certification.',
+      "An interactive Tableau dashboard reading Taco Bell's social performance across reach, sentiment, and category engagement. A 9 PM engagement peak, 100K posts, and 100.73B cumulative reach. This work earned my Tableau Desktop Analyst certification.",
     palette: { c1: '#5B1FB0', c2: '#A21CAF', c3: '#EC4899', text: '#FFF5FB' },
     link: {
       label: 'View on Notion',
       href: 'https://app.notion.com/p/haydenporter/Taco-Bell-Social-Listening-Dashboard-27c6b625dba3803886b4d69637e6c436',
     },
+    image: tacoThumb,
   },
   {
     slug: 'the-public-ingredient',
@@ -83,6 +101,7 @@ export const projects: Project[] = [
       label: 'View on Notion',
       href: 'https://app.notion.com/p/haydenporter/The-Public-Ingredient-Figma-Pitch-27a6b625dba380c3a794e28e98218cfe',
     },
+    image: publicIngredientThumb,
   },
   {
     slug: 'leave-no-trace',
@@ -92,5 +111,6 @@ export const projects: Project[] = [
       'A citizen action short film arguing that local government should take on beach pollution. Seven minutes built around the Coastal Basket Program, a real litter collection initiative. I wrote, shot, and edited it. Still my benchmark for craft.',
     palette: { c1: '#0E7490', c2: '#0EA5A5', c3: '#10B981', text: '#EFFAF7' },
     link: { label: 'Watch on YouTube', href: 'https://www.youtube.com/watch?v=fbTP3Gn3J1I' },
+    image: leaveNoTraceThumb,
   },
 ];

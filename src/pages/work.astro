@@ -19,7 +19,7 @@ import { projects } from '../data/projects';
       <div class="work-intro">
         <span class="work-intro__eyebrow" data-reveal>Selected Work</span>
         <h1 class="work-intro__title" data-reveal style="--reveal-delay: 120;">
-          A timeline of things I&rsquo;ve made.
+          A timeline of things.
         </h1>
       </div>
     </section>
@@ -122,15 +122,26 @@ import { projects } from '../data/projects';
     max-width: 1080px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 2fr;
     gap: 3.5rem;
     align-items: center;
     text-decoration: none;
     color: inherit;
   }
 
+  .proj--reverse .proj__inner {
+    grid-template-columns: 2fr 3fr;
+  }
+
   .proj--reverse .proj__media {
     order: 2;
+  }
+
+  .proj--reverse .proj__text {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
   }
 
   .proj__media {

@@ -5,7 +5,7 @@ import { projects } from '../../data/projects';
 export function getStaticPaths() {
   // Slugs that have their own bespoke page file — exclude them here so the
   // static route and this dynamic fallback don't collide.
-  const bespoke = new Set(['millfield-county']);
+  const bespoke = new Set(['millfield-county', 'cloudflare-internship']);
   return projects
     .filter((project) => !bespoke.has(project.slug))
     .map((project) => ({ params: { project: project.slug }, props: { project } }));

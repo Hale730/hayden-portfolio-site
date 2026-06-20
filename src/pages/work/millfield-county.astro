@@ -57,10 +57,10 @@ const tools = [
           <p>
             <a href="https://millfieldcounty.com" target="_blank" rel="noopener noreferrer"
               >millfieldcounty.com</a
-            > looks like an ordinary county portal from 2002. A news
-            carousel, a staff directory, a calendar, a contact page. Spend a few minutes
-            clicking around and something feels wrong. Read the articles, listen to the
-            voicemails, and solve the puzzle to uncover the unsettling story of Millfield
+            > looks like an ordinary county portal from 2002. Complete with a news
+            carousel, staff directory, county calendar, and a staff contact page. But, spend a few minutes
+            exploring and something feels... off. Read the articles, listen to
+            voicemails, and solve a puzzle that uncovers the unsettling story of Millfield
             County.
           </p>
 
@@ -69,14 +69,14 @@ const tools = [
           </figure>
 
           <p>
-            I built the site solo for my Exploring User Interaction class at UT Austin,
-            where the goal was to use interface as a storytelling medium. The screens
-            themselves are the puzzle. A staff intranet that you log into using a clue
-            hidden in an article. A records archive that unlocks one document at a time,
-            leading from a police report to four family statements to a final recorded
-            interview. A working phone dialer that rewrites the homepage when you call the
-            right number. Every detail is committed to its era, down to the period
-            typography and a recorded voicemail behind each county phone number.
+            I built the site for my "Exploring User Interaction" class at UT Austin,
+            where the task was to select a concept or theme that resonated with me, determine a target participant/user, and conduct both concept research and user research to inform the project.
+            If you are intrested in a detailed breakdown of my design decisions and research you can find it
+            <a href="https://docs.google.com/presentation/d/1wY1Mh_e0UmTlYLXZWa-_4Ep5_bZFsbadq1gnxfCHU-g/edit?slide=id.p#slide=id.p" target="_blank" rel="noopener noreferrer">here</a>.
+            The story is hidden across a multitude of locations and media. A records archive that unlocks one document at a time,
+            leading from a police report to four family statements to a recorded
+            interview. A working phone dialer that effects the homepage when you call the
+            right number. Every detail is committed to its era, from the UI to the grainy audio.
           </p>
 
           <figure class="mc-fig">
@@ -145,13 +145,14 @@ const tools = [
   .mc-navback {
     position: fixed;
     top: 0;
-    left: 2rem;
-    padding: 0.85rem 0;
+    left: 0;
+    padding: 0.85rem 1.5rem;
     z-index: 101;
     display: flex;
     align-items: center;
     gap: 0.7rem;
     text-decoration: none;
+    transform: translateY(-10px);
   }
 
   .mc-navback__btn {
@@ -194,7 +195,7 @@ const tools = [
   .mc-skin {
     position: relative;
     z-index: 2;
-    padding: 8rem 1.5rem 5rem;
+    padding: 4.5rem 1.5rem 5rem;
     font-family: Verdana, Geneva, Tahoma, Arial, sans-serif;
   }
 
@@ -329,7 +330,7 @@ const tools = [
 
   @media (min-width: 768px) {
     .mc-skin {
-      padding: 9rem 2rem 6rem;
+      padding: 5rem 2rem 6rem;
     }
   }
 </style>

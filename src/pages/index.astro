@@ -35,15 +35,17 @@ import WorkSection from '../components/WorkSection.astro';
 <style>
   .site {
     position: relative;
-
     z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   .footer {
     position: relative;
     z-index: 2;
-    background: #0b0b0f;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: #ffffff;
+    border-top: 1px dotted rgba(0, 0, 0, 0.25);
     padding: 3rem 2rem 2.5rem;
   }
 
@@ -65,7 +67,7 @@ import WorkSection from '../components/WorkSection.astro';
   .footer__name {
     font-size: 1rem;
     font-weight: 600;
-    color: #ffffff;
+    color: #000000;
     letter-spacing: -0.01em;
   }
 
@@ -73,7 +75,7 @@ import WorkSection from '../components/WorkSection.astro';
     font-size: 0.75rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.45);
   }
 
   .footer__links {
@@ -83,7 +85,7 @@ import WorkSection from '../components/WorkSection.astro';
 
   .footer__link {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(0, 0, 0, 0.45);
     transition: color 0.25s ease;
     position: relative;
   }
@@ -95,14 +97,14 @@ import WorkSection from '../components/WorkSection.astro';
     bottom: -3px;
     width: 100%;
     height: 1px;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.45);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.3s ease;
   }
 
   .footer__link:hover {
-    color: #ffffff;
+    color: #000000;
   }
 
   .footer__link:hover::after {
@@ -111,7 +113,7 @@ import WorkSection from '../components/WorkSection.astro';
 
   .footer__meta {
     font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.35);
     letter-spacing: 0.05em;
   }
 
